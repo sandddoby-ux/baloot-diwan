@@ -1,0 +1,272 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User account profile and player statistics",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Unique identifier of user",
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "description": "Display name of player",
+          "maxLength": 50
+        },
+        "avatar": {
+          "type": "string",
+          "description": "Player avatar emoji or icon",
+          "maxLength": 20
+        },
+        "level": {
+          "type": "number",
+          "description": "Player level"
+        },
+        "xp": {
+          "type": "number",
+          "description": "Experience points"
+        },
+        "coins": {
+          "type": "number",
+          "description": "Prestige diwan tokens"
+        },
+        "isSubscriber": {
+          "type": "boolean",
+          "description": "Whether player has active Diwan Plus"
+        },
+        "subscriptionPlan": {
+          "type": "string",
+          "description": "Active subscription plan",
+          "enum": ["free", "monthly", "annual"]
+        },
+        "tableTheme": {
+          "type": "string",
+          "description": "Preferred table felt theme",
+          "maxLength": 30
+        },
+        "cardBackTheme": {
+          "type": "string",
+          "description": "Preferred card back design",
+          "maxLength": 30
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update timestamp"
+        }
+      },
+      "required": ["userId", "name", "level", "createdAt"]
+    },
+    "OnlineRoom": {
+      "title": "OnlineRoom",
+      "description": "Multiplayer Baloot room",
+      "type": "object",
+      "properties": {
+        "roomId": {
+          "type": "string",
+          "description": "Unique room ID",
+          "maxLength": 64
+        },
+        "roomCode": {
+          "type": "string",
+          "description": "6-character shareable room code",
+          "maxLength": 12
+        },
+        "hostId": {
+          "type": "string",
+          "description": "UID of room creator",
+          "maxLength": 128
+        },
+        "hostName": {
+          "type": "string",
+          "description": "Name of room host",
+          "maxLength": 50
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of the room",
+          "enum": ["waiting", "playing", "finished"]
+        },
+        "playerIds": {
+          "type": "array",
+          "description": "List of player user IDs in room"
+        },
+        "turnTimer": {
+          "type": "number",
+          "description": "Seconds allowed per turn"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Room creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update timestamp"
+        }
+      },
+      "required": ["roomId", "roomCode", "hostId", "status", "createdAt"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "Real-time in-game message",
+      "type": "object",
+      "properties": {
+        "messageId": {
+          "type": "string",
+          "description": "Unique message ID",
+          "maxLength": 64
+        },
+        "roomId": {
+          "type": "string",
+          "description": "ID of room",
+          "maxLength": 64
+        },
+        "senderId": {
+          "type": "string",
+          "description": "UID of sender",
+          "maxLength": 128
+        },
+        "senderName": {
+          "type": "string",
+          "description": "Sender display name",
+          "maxLength": 50
+        },
+        "text": {
+          "type": "string",
+          "description": "Message content",
+          "maxLength": 200
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Message timestamp"
+        }
+      },
+      "required": ["messageId", "roomId", "senderId", "senderName", "text", "createdAt"]
+    },
+    "LeaderboardEntry": {
+      "title": "LeaderboardEntry",
+      "description": "Seasonal leaderboard entry",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Player UID",
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "description": "Player name",
+          "maxLength": 50
+        },
+        "avatar": {
+          "type": "string",
+          "description": "Player avatar",
+          "maxLength": 20
+        },
+        "country": {
+          "type": "string",
+          "description": "Region or country",
+          "maxLength": 30
+        },
+        "winRate": {
+          "type": "number",
+          "description": "Win rate percentage"
+        },
+        "matches": {
+          "type": "number",
+          "description": "Total matches"
+        },
+        "points": {
+          "type": "number",
+          "description": "Total prestige points"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Update timestamp"
+        }
+      },
+      "required": ["userId", "name", "points"]
+    },
+    "RoomInvitation": {
+      "title": "RoomInvitation",
+      "description": "Direct room invitation sent between players",
+      "type": "object",
+      "properties": {
+        "invitationId": {
+          "type": "string",
+          "description": "Unique invitation ID",
+          "maxLength": 64
+        },
+        "senderId": {
+          "type": "string",
+          "description": "Sender user ID",
+          "maxLength": 128
+        },
+        "senderName": {
+          "type": "string",
+          "description": "Sender display name",
+          "maxLength": 50
+        },
+        "toUserId": {
+          "type": "string",
+          "description": "Recipient friend user ID",
+          "maxLength": 128
+        },
+        "roomId": {
+          "type": "string",
+          "description": "Target room ID",
+          "maxLength": 64
+        },
+        "roomCode": {
+          "type": "string",
+          "description": "Target room Code",
+          "maxLength": 12
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of the invitation",
+          "enum": ["pending", "accepted", "declined"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Invitation creation timestamp"
+        }
+      },
+      "required": ["invitationId", "senderId", "senderName", "toUserId", "roomId", "roomCode", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profiles and player statistics"
+    },
+    "/rooms/{roomId}": {
+      "schema": "OnlineRoom",
+      "description": "Online multiplayer rooms and live state"
+    },
+    "/rooms/{roomId}/messages/{messageId}": {
+      "schema": "ChatMessage",
+      "description": "In-room chat messages"
+    },
+    "/leaderboard/{entryId}": {
+      "schema": "LeaderboardEntry",
+      "description": "Public ranking leaderboard"
+    },
+    "/invitations/{invitationId}": {
+      "schema": "RoomInvitation",
+      "description": "Real-time room invitations sent between friends"
+    }
+  }
+}

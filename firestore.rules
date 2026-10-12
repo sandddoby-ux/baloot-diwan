@@ -1,0 +1,68 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default Deny Catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Connection test document
+    match /test/connection {
+      allow read: if true;
+    }
+
+    // User profiles
+    match /users/{userId} {
+      allow get: if isSignedIn();
+      allow list: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(userId) && request.auth.uid == userId && incoming().userId == request.auth.uid;
+      allow update: if isSignedIn() && isValidId(userId) && request.auth.uid == userId && incoming().userId == existing().userId;
+      allow delete: if isSignedIn() && isValidId(userId) && request.auth.uid == userId;
+    }
+
+    // Multiplayer rooms & game state
+    match /rooms/{roomId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(roomId) && incoming().hostId == request.auth.uid;
+      allow update: if isSignedIn() && isValidId(roomId);
+      allow delete: if isSignedIn() && isValidId(roomId) && (existing().hostId == request.auth.uid);
+
+      // In-room messages
+      match /messages/{messageId} {
+        allow read: if isSignedIn();
+        allow create: if isSignedIn() && isValidId(roomId) && isValidId(messageId) && incoming().senderId == request.auth.uid;
+        allow delete: if isSignedIn() && isValidId(messageId) && existing().senderId == request.auth.uid;
+      }
+    }
+
+    // Public Leaderboard
+    match /leaderboard/{entryId} {
+      allow read: if true;
+      allow write: if isSignedIn() && isValidId(entryId);
+    }
+
+    // Room Invitations
+    match /invitations/{invitationId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(invitationId) && incoming().senderId == request.auth.uid;
+      allow update: if isSignedIn() && isValidId(invitationId);
+      allow delete: if isSignedIn() && isValidId(invitationId);
+    }
+  }
+}

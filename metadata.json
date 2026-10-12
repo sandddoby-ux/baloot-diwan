@@ -1,0 +1,6 @@
+{
+  "name": "ديوان البلوت - Baloot Diwan",
+  "description": "المنصة الخليجية الأولى للعب البلوت أونلاين بقوانين رسمية معتمدة - لعب جماعي مباشر، غرف خاصة، تدريب ضد الكمبيوتر، وتجربة عادلة 100%.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

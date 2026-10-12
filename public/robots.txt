@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Priority Crawl for Googlebot & Arabic Search Engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Mobile
+Allow: /
+
+# Sitemap
+Sitemap: https://balootdiwan.com/sitemap.xml
